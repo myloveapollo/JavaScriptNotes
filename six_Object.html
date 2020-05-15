@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>第六章 面向对象的程序设计</title>
+</head>
+<body>
+	<script type="text/javascript">
+		//6.1.1创建对象
+		var person = {
+			name:"Nicholas",
+			age:29
+		};
+		//6.1.2.属性类型 
+		/*
+			* configurable 是否支持delete
+			* enumerable 是否能for-in
+			* writable 是否能修改属性
+			* value 包含值得属性 
+			
+			用 Object.defineProperty()
+		*/
+
+		var person = {};
+		Object.defineProperty(person,name,{
+			writable:false,
+			value: "Nicholas1"
+		});
+
+		// alert(person.name);
+		//6.2 访问属性 getter、setter
+
+		var book = {
+			_year:2004,
+			edition: 1
+		};
+
+		//用定义多个属性来Object.defineProperties()
+		Object.defineProperties(book, {
+			_year:{
+				value: 2006
+			},
+
+			edition : {
+				value : 2
+			},
+
+			get:function(){
+				return this._year;
+			},
+
+			set:function(){
+				if(newValue > 2004){
+					this._year = newValue;
+					this.edition += newValue - 2004;
+				}
+			}
+		});
+
+		// book.year = 2005;
+		// alert(book.edition);
+
+		// 6.1.2多个属性定义 Object.defineProperties() 
+		//6.1.3读取属性的特性 Object.getOwnPropertyDescriptor()
+		var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
+		// console.log(descriptor.value);
+		// console.log(descriptor.configurable);
+		// 6.2 创建对象 -- 工厂模式 -- 构造函数模式(始终用大写字母开头，其他函数用小写字母，任何函数只要通过new来调用，就是构造函数)
+		//构造函数模式
+		function Person(name, age, job){
+			this.name = name;
+			this.age = age;
+			this.job = job;
+			this.sayName = sayName;
+			//第二种方法
+			// this.sayName = function(){
+			// 	alert(this.name);
+			// }
+
+		}
+		//讲函数放在构造函数外，如此，person1.sayName == person2.sayName --> true
+		function sayName(){
+			alert(this.name);
+		}
+			
+		
+		var person1 = new Person("yuanheng", 30, "teacher");
+		var person2 = new Person("yuanyuan", 29, "boss");
+		console.log(person1.sayName == person2.sayName);
+		// console.log(person2.sayName == person1.sayName);
+
+
+	</script>
+</body>
+</html>
